@@ -90,4 +90,65 @@ std::string Utf16ToUtf8(std::u16string_view in) {
     return s;
 }
 
+std::u16string Utf8ToUtf16(std::string_view in) {
+    std::u16string out;
+    out.reserve(in.size());
+
+    const auto emit = [&](char32_t cp) {
+        if (cp > 0xFFFFu) {
+            cp -= 0x10000u;
+            out.push_back(static_cast<char16_t>(0xD800u + (cp >> 10)));
+            out.push_back(static_cast<char16_t>(0xDC00u + (cp & 0x3FFu)));
+        } else {
+            out.push_back(static_cast<char16_t>(cp));
+        }
+    };
+
+    std::size_t i = 0;
+    const std::size_t n = in.size();
+    while (i < n) {
+        const unsigned char c = static_cast<unsigned char>(in[i]);
+        char32_t cp;
+        int extra;
+        if (c < 0x80u) {
+            cp = c;
+            extra = 0;
+        } else if ((c >> 5) == 0x6u) {
+            cp = c & 0x1Fu;
+            extra = 1;
+        } else if ((c >> 4) == 0xEu) {
+            cp = c & 0x0Fu;
+            extra = 2;
+        } else if ((c >> 3) == 0x1Eu) {
+            cp = c & 0x07u;
+            extra = 3;
+        } else {
+            emit(0xFFFD);  // invalid lead byte
+            ++i;
+            continue;
+        }
+        if (i + static_cast<std::size_t>(extra) >= n) {
+            emit(0xFFFD);  // truncated sequence
+            break;
+        }
+        bool ok = true;
+        for (int j = 1; j <= extra; ++j) {
+            const unsigned char cc = static_cast<unsigned char>(in[i + static_cast<std::size_t>(j)]);
+            if ((cc >> 6) != 0x2u) {
+                ok = false;
+                break;
+            }
+            cp = (cp << 6) | (cc & 0x3Fu);
+        }
+        if (!ok) {
+            emit(0xFFFD);
+            ++i;
+            continue;
+        }
+        emit(cp);
+        i += static_cast<std::size_t>(extra) + 1;
+    }
+    return out;
+}
+
 }  // namespace pwfilter

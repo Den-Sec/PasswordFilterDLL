@@ -56,6 +56,22 @@ TEST(Utf, BoundedWriteReportsOverflow) {
     EXPECT_EQ(Utf16ToUtf8(u"hello", small, sizeof(small)), static_cast<std::size_t>(-1));
 }
 
+TEST(Utf, RoundTripUtf8ToUtf16AndBack) {
+    std::u16string original;
+    original.append(u"Pa55w0rd ");
+    original.push_back(0x00E9);   // é
+    original.push_back(0x20AC);   // €
+    original.push_back(0xD83D);   // emoji surrogate pair
+    original.push_back(0xDE00);
+    const std::string utf8 = Utf16ToUtf8(original);
+    EXPECT_EQ(pwfilter::Utf8ToUtf16(utf8), original);
+}
+
+TEST(Utf, Utf8ToUtf16Ascii) {
+    EXPECT_EQ(pwfilter::Utf8ToUtf16("hello"), u"hello");
+    EXPECT_EQ(pwfilter::Utf8ToUtf16(""), u"");
+}
+
 TEST(Utf, BoundedAndAllocatingAgree) {
     std::u16string in;
     in.push_back(0x0041);  // A

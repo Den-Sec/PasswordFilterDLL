@@ -22,4 +22,9 @@ std::size_t Utf16ToUtf8(std::u16string_view in, std::uint8_t* out, std::size_t o
 // Convenience form for tests/tools (allocates). Avoid for live plaintext.
 std::string Utf16ToUtf8(std::u16string_view in);
 
+// UTF-8 -> UTF-16, for reading UTF-8 config files (blacklist, company terms) into the
+// core's char16_t world. Invalid sequences become U+FFFD. Allocates; intended for
+// configuration data, not live passwords.
+std::u16string Utf8ToUtf16(std::string_view in);
+
 }  // namespace pwfilter
