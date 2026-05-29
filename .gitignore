@@ -1,0 +1,34 @@
+# Build output
+/build/
+/out/
+[Bb]uild/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.res
+
+# Visual Studio / IDE
+.vs/
+*.user
+*.suo
+CMakeSettings.json
+.idea/
+
+# Breach artifacts - NEVER commit the (large) bloom; CI/tests regenerate the sample
+*.bloom
+
+# HIBP dataset dumps (huge, never committed)
+pwned-passwords-*.txt
+*.txt.gz
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+Thumbs.db
+.DS_Store

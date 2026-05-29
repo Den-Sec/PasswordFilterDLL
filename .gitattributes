@@ -1,0 +1,12 @@
+# Normalize line endings: LF in the repository, auto-converted on checkout.
+* text=auto eol=lf
+
+# Windows-native scripts must stay CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary artifacts (never diffed/normalized).
+*.bloom binary
+*.png   binary
+*.ico   binary

@@ -1,0 +1,6 @@
+; Exported LSA notification-package entry points.
+; A .def keeps the names undecorated and stable regardless of toolset/calling convention.
+EXPORTS
+    InitializeChangeNotify
+    PasswordFilter
+    PasswordChangeNotify
