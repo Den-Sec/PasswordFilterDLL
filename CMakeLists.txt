@@ -28,7 +28,7 @@ option(PWFILTER_WERROR "Treat compiler warnings as errors" ON)
 add_library(pwfilter_flags INTERFACE)
 if(MSVC)
   target_compile_options(pwfilter_flags INTERFACE
-    /W4 /permissive- /external:anglebrackets /external:W0)
+    /W4 /permissive- /utf-8 /external:anglebrackets /external:W0)
   if(PWFILTER_WERROR)
     target_compile_options(pwfilter_flags INTERFACE /WX)
   endif()

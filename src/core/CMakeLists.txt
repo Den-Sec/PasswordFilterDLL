@@ -11,6 +11,7 @@ add_library(pwfilter_core STATIC
   src/complexity.cpp
   src/blacklist.cpp
   src/policy.cpp
+  src/breach_bloom.cpp
 )
 
 target_include_directories(pwfilter_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

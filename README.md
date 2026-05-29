@@ -80,7 +80,7 @@ Windows headers required), which is what makes the policy logic portable and tes
 - [x] **F0** - CMake + CI scaffolding, three targets, smoke test
 - [x] **F1** - Core: portable SHA-1, Bloom filter, secure zeroing, UTF-16→UTF-8
 - [x] **F2** - Core: complexity rules, blacklist, policy evaluator
-- [ ] **F3** - Core: breach checker (SHA-1 → Bloom)
+- [x] **F3** - Core: breach checker (SHA-1 → Bloom)
 - [ ] **F4** - Python Bloom builder + sample data + cross-language format test
 - [ ] **F5** - LSASS shim: fail-safe `dllmain`, registry/file config, Event Log
 - [ ] **F6** - Deployment scripts, ADMX, full documentation
