@@ -82,7 +82,7 @@ Windows headers required), which is what makes the policy logic portable and tes
 - [x] **F2** - Core: complexity rules, blacklist, policy evaluator
 - [x] **F3** - Core: breach checker (SHA-1 → Bloom)
 - [x] **F4** - Python Bloom builder + sample data + cross-language format test
-- [ ] **F5** - LSASS shim: fail-safe `dllmain`, registry/file config, Event Log
+- [x] **F5** - LSASS shim: fail-safe `dllmain`, registry/file config, Event Log
 - [ ] **F6** - Deployment scripts, ADMX, full documentation
 - [ ] **F7** - Optional online HIBP k-anonymity checker (admin tool, out of LSASS)
 
