@@ -7,6 +7,10 @@ add_library(pwfilter_core STATIC
   src/sha1.cpp
   src/utf.cpp
   src/bloom.cpp
+  src/result.cpp
+  src/complexity.cpp
+  src/blacklist.cpp
+  src/policy.cpp
 )
 
 target_include_directories(pwfilter_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

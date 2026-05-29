@@ -15,6 +15,9 @@ add_executable(pwfilter_tests
   test_utf.cpp
   test_secure.cpp
   test_bloom.cpp
+  test_complexity.cpp
+  test_blacklist.cpp
+  test_policy.cpp
 )
 target_link_libraries(pwfilter_tests PRIVATE pwfilter_core pwfilter_flags GTest::gtest_main)
 
