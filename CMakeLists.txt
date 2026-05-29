@@ -20,14 +20,22 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Place the import library next to nothing useful; keep the tree predictable.
+# Strict warnings applied ONLY to our own targets (link pwfilter_flags), never to fetched
+# dependencies (GoogleTest) or the Windows SDK headers - otherwise their warnings would
+# break our warnings-as-errors build. Our headers are quote-included; system/dependency
+# headers are angle-included and silenced via /external.
+option(PWFILTER_WERROR "Treat compiler warnings as errors" ON)
+add_library(pwfilter_flags INTERFACE)
 if(MSVC)
-  # /W4 high warnings, /permissive- strict conformance, /EHsc C++ exceptions.
-  add_compile_options(/W4 /permissive- /EHsc)
-  # Treat warnings as errors in CI-style builds; relax locally via -DPWFILTER_WERROR=OFF.
-  option(PWFILTER_WERROR "Treat compiler warnings as errors" ON)
+  target_compile_options(pwfilter_flags INTERFACE
+    /W4 /permissive- /external:anglebrackets /external:W0)
   if(PWFILTER_WERROR)
-    add_compile_options(/WX)
+    target_compile_options(pwfilter_flags INTERFACE /WX)
+  endif()
+else()
+  target_compile_options(pwfilter_flags INTERFACE -Wall -Wextra -Wpedantic)
+  if(PWFILTER_WERROR)
+    target_compile_options(pwfilter_flags INTERFACE -Werror)
   endif()
 endif()
 

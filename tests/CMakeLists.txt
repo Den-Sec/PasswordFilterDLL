@@ -11,8 +11,12 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(pwfilter_tests
   test_sanity.cpp
+  test_sha1.cpp
+  test_utf.cpp
+  test_secure.cpp
+  test_bloom.cpp
 )
-target_link_libraries(pwfilter_tests PRIVATE pwfilter_core GTest::gtest_main)
+target_link_libraries(pwfilter_tests PRIVATE pwfilter_core pwfilter_flags GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(pwfilter_tests)

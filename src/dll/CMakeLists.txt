@@ -6,7 +6,7 @@ add_library(PasswordFilterDLL SHARED
   exports.def
 )
 
-target_link_libraries(PasswordFilterDLL PRIVATE pwfilter_core)
+target_link_libraries(PasswordFilterDLL PRIVATE pwfilter_core pwfilter_flags)
 
 # Export the three LSA entry points with undecorated names (exports.def guarantees this
 # across toolsets/configs). Keep the output name exactly "PasswordFilterDLL.dll".

@@ -78,7 +78,7 @@ Windows headers required), which is what makes the policy logic portable and tes
 ## Roadmap
 
 - [x] **F0** - CMake + CI scaffolding, three targets, smoke test
-- [ ] **F1** - Core: portable SHA-1, Bloom filter, secure zeroing, UTF-16→UTF-8
+- [x] **F1** - Core: portable SHA-1, Bloom filter, secure zeroing, UTF-16→UTF-8
 - [ ] **F2** - Core: complexity rules, blacklist, policy evaluator
 - [ ] **F3** - Core: breach checker (SHA-1 → Bloom)
 - [ ] **F4** - Python Bloom builder + sample data + cross-language format test
