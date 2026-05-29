@@ -1,0 +1,15 @@
+# PasswordFilterDLL - blacklist (exact-match banned passwords)
+# One password per line. Matched as a whole password (not a substring).
+# Case-insensitive by default (see BlacklistCaseInsensitive). Lines starting with # are
+# comments; blank lines are ignored. Save as UTF-8 and place at:
+#   %ProgramData%\PasswordFilter\blacklist.txt
+#
+# Use this for organisation-specific passwords you know are circulating (former shared
+# accounts, predictable seasonal patterns, leaked internal credentials). General weak
+# passwords are already covered by the HIBP breach list.
+
+ChangeMe123!
+Welcome2026!
+Company2026!
+Helpdesk2026!
+Temp.Password1

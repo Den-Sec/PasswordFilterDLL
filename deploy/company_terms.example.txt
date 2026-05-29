@@ -1,0 +1,12 @@
+# PasswordFilterDLL - company/brand terms (substring match)
+# One term per line. A password is rejected if it CONTAINS any term (case-insensitive),
+# so "Acme" blocks "Acme2026!", "myacmepass", etc. Keep terms reasonably long to avoid
+# over-blocking. Save as UTF-8 and place at:
+#   %ProgramData%\PasswordFilter\company_terms.txt
+
+Acme
+AcmeCorp
+Contoso
+# product / project names commonly used as passwords
+Helpdesk
+Intranet

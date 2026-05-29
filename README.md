@@ -64,6 +64,29 @@ ctest --test-dir build -C Release --output-on-failure
 The pure `pwfilter_core` library and its tests also build on any C++17 compiler (no
 Windows headers required), which is what makes the policy logic portable and testable.
 
+## Deploy (lab only)
+
+> Validate on a non-production Domain Controller first - this runs in LSASS.
+
+```powershell
+# 1. Build the offline breach artifact once (Python only) from the HIBP dump:
+python scripts\build_bloom.py pwnedpasswords.txt -o breach.bloom --count 1300000000
+
+# 2. Install on a test DC (copies the DLL, sets policy, registers with LSA - merge-safe):
+.\deploy\Install-PasswordFilter.ps1 -DllSource .\PasswordFilterDLL.dll
+#    place breach.bloom in %ProgramData%\PasswordFilter\, then REBOOT
+
+# 3. Exercise it and read the Event Log:
+.\deploy\Test-PasswordFilter.ps1 -SamAccountName test.user
+
+# Rollback:
+.\deploy\Uninstall-PasswordFilter.ps1
+```
+
+Full guides: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) · [docs/CONFIG.md](docs/CONFIG.md) ·
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [SECURITY.md](SECURITY.md). GPO admins: an
+ADMX/ADML template ships in [`deploy/`](deploy/).
+
 ## Layout
 
 | Path | What |
@@ -83,7 +106,7 @@ Windows headers required), which is what makes the policy logic portable and tes
 - [x] **F3** - Core: breach checker (SHA-1 → Bloom)
 - [x] **F4** - Python Bloom builder + sample data + cross-language format test
 - [x] **F5** - LSASS shim: fail-safe `dllmain`, registry/file config, Event Log
-- [ ] **F6** - Deployment scripts, ADMX, full documentation
+- [x] **F6** - Deployment scripts, ADMX, full documentation
 - [ ] **F7** - Optional online HIBP k-anonymity checker (admin tool, out of LSASS)
 
 ## Security

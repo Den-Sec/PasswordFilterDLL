@@ -1,0 +1,32 @@
+Windows Registry Editor Version 5.00
+
+; PasswordFilterDLL - example policy.
+; Import with: reg import policy.example.reg   (or double-click). Adjust to taste.
+; All values are read once when LSASS loads the filter (i.e. at boot).
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Den-Sec\PasswordFilter]
+; --- length ---
+"MinLength"=dword:0000000c
+"MaxLength"=dword:00000100
+; --- character classes (of lower/upper/digit/symbol); 0 disables ---
+"RequiredClasses"=dword:00000003
+; --- pattern rules (1 = on, 0 = off) ---
+"RejectKeyboardPatterns"=dword:00000001
+"RejectSequences"=dword:00000001
+"SequenceMinRun"=dword:00000004
+"KeyboardMinRun"=dword:00000004
+"MaxRepeatRun"=dword:00000004
+; --- identity rules ---
+"RejectContainsAccountName"=dword:00000001
+"RejectContainsFullName"=dword:00000001
+"MinIdentityToken"=dword:00000003
+; --- breach + blacklist ---
+"CheckBreach"=dword:00000001
+"BlacklistCaseInsensitive"=dword:00000001
+; --- error handling: 1 = fail open (allow) on internal error ---
+"FailOpenOnError"=dword:00000001
+; --- data files ---
+"DataDir"="C:\\ProgramData\\PasswordFilter"
+"BloomFile"="breach.bloom"
+"BlacklistFile"="blacklist.txt"
+"CompanyTermsFile"="company_terms.txt"
