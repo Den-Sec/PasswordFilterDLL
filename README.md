@@ -18,9 +18,9 @@ passwords that fail policy:
 - **GPO-friendly deployment** - registry-driven configuration (ADMX template), x64,
   with install/rollback scripts.
 
-> ⚠️ **Project status: under active development.** The build, test and CI scaffolding is in
-> place; the validation engine, LSASS shim and deployment tooling are being implemented in
-> phases (see [Roadmap](#roadmap)). Do not deploy to a production Domain Controller.
+> **Status: v0.1.0.** The validation core (unit-tested in CI), the LSASS shim, the offline
+> Bloom pipeline and the deployment tooling are all in place. Treat it like any new LSASS
+> component: validate on a **lab** Domain Controller before production.
 
 ## Why this design
 
@@ -95,8 +95,22 @@ ADMX/ADML template ships in [`deploy/`](deploy/).
 | `src/dll/`  | The `LSASS`-resident shim (the three LSA exports) |
 | `tests/`    | GoogleTest suite over `pwfilter_core` (run via CTest) |
 | `scripts/build_bloom.py` | Offline builder: HIBP dump → Bloom artifact |
+| `src/tools/pwhibp_check.py` | Admin/dev tool: online HIBP k-anonymity check (out of LSASS) |
 | `deploy/`   | Install/uninstall scripts + ADMX template (GPO) |
 | `docs/`     | Architecture, deployment and configuration guides |
+
+## Capability → code
+
+| Capability | Where |
+|------------|-------|
+| LSA password filter for Active Directory, in C++ | `src/dll/dllmain.cpp` (3 LSA exports) + `src/core/` (C++17) |
+| Blocks compromised passwords, offline breach-list (HIBP) | `src/core/breach_bloom.cpp`, `src/core/bloom.cpp`, `scripts/build_bloom.py` |
+| Have I Been Pwned k-anonymity model | `src/tools/pwhibp_check.py` (online range query); offline corpus is the same dataset |
+| Custom complexity rules | `src/core/complexity.cpp` (length, classes, keyboard walks, sequences, repeats, identity) |
+| Company blacklist | `src/core/blacklist.cpp` + `blacklist.txt` / `company_terms.txt` |
+| Event logging (metadata only) | `src/dll/eventlog.cpp` + `src/dll/messages.mc` |
+| GPO-friendly deployment | `deploy/*.ps1` + `deploy/PasswordFilter.admx` / `.adml` |
+| Open-source | this repository, [MIT](LICENSE) |
 
 ## Roadmap
 
@@ -107,7 +121,7 @@ ADMX/ADML template ships in [`deploy/`](deploy/).
 - [x] **F4** - Python Bloom builder + sample data + cross-language format test
 - [x] **F5** - LSASS shim: fail-safe `dllmain`, registry/file config, Event Log
 - [x] **F6** - Deployment scripts, ADMX, full documentation
-- [ ] **F7** - Optional online HIBP k-anonymity checker (admin tool, out of LSASS)
+- [x] **F7** - Optional online HIBP k-anonymity checker (admin tool, out of LSASS)
 
 ## Security
 
