@@ -6,12 +6,12 @@ using pwfilter::Blacklist;
 
 TEST(Blacklist, ExactMatchCaseInsensitiveByDefault) {
     Blacklist bl;  // case-insensitive
-    bl.Add(u"Comes@2025");
-    EXPECT_TRUE(bl.Contains(u"Comes@2025"));
-    EXPECT_TRUE(bl.Contains(u"comes@2025"));
-    EXPECT_TRUE(bl.Contains(u"COMES@2025"));
-    EXPECT_FALSE(bl.Contains(u"Comes@2026"));
-    EXPECT_FALSE(bl.Contains(u"xComes@2025"));  // exact match, not substring
+    bl.Add(u"Acme@2025");
+    EXPECT_TRUE(bl.Contains(u"Acme@2025"));
+    EXPECT_TRUE(bl.Contains(u"acme@2025"));
+    EXPECT_TRUE(bl.Contains(u"ACME@2025"));
+    EXPECT_FALSE(bl.Contains(u"Acme@2026"));
+    EXPECT_FALSE(bl.Contains(u"xAcme@2025"));  // exact match, not substring
 }
 
 TEST(Blacklist, CaseSensitiveMode) {
