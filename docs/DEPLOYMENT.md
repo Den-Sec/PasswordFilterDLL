@@ -57,6 +57,12 @@ package to `Notification Packages` **without disturbing the packages already the
 **A reboot is required** for LSASS to load the filter. There is no way to load a
 notification package without restarting LSASS (i.e. the machine).
 
+> **LSA Protection (RunAsPPL).** If the target hardens LSASS with LSA Protection (common
+> on modern/Credential-Guard DCs; check `HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL`
+> or a "LSASS started as a protected process" System-log entry), an **unsigned** DLL is
+> refused with error 577 (`INVALID_IMAGE_HASH`, SAM event 16953) and the filter never runs.
+> You must **code-sign** the DLL for those hosts. See [SECURITY.md](../SECURITY.md#code-signing-and-lsa-protection-runasppl).
+
 ## 4. Validate (lab)
 
 After the reboot, on the lab DC:

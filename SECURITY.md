@@ -55,11 +55,31 @@ changes, or you suspect it of instability):
 Because the filter fails open by default, an internal bug degrades to "no filtering," not
 "no logins" - but always validate in a lab first.
 
+## Code signing and LSA Protection (RunAsPPL)
+
+On a host where **LSA Protection (RunAsPPL)** is enabled - increasingly the default on
+hardened Windows and Credential Guard systems, and a Microsoft hardening recommendation
+for Domain Controllers - LSASS runs as a **protected process** and refuses to load any
+notification package that is not signed with a trusted code-signing certificate. An
+**unsigned** build fails to load with error `0x241` (577, `INVALID_IMAGE_HASH`), logged by
+SAM as **event 16953**, and the filter never runs.
+
+- To deploy on such hosts, **sign `PasswordFilterDLL.dll`** with a code-signing certificate
+  that satisfies the LSA plug-in signing requirements.
+- On hosts **without** LSA Protection, an unsigned build loads and runs normally.
+- Check the target: `HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL = 1`, or a
+  "LSASS.exe was started as a protected process" entry in the System log.
+
+This was confirmed during integration testing: the filter logic was validated working on a
+real Windows host (the DLL loaded in a normal process, correctly rejecting weak passwords
+and accepting strong ones), and separately observed being correctly **refused by a
+protected LSASS** until signed.
+
 ## Testing
 
 Test **only** on a non-production lab Domain Controller (or a standalone test box). Never
 register an unproven filter on a production DC. `pwfilter_core` is unit-tested off-host and
-in CI; the LSASS integration is validated in a lab VM (see `docs/DEPLOYMENT.md`).
+in CI; the LSASS integration must be validated on a lab host (see `docs/DEPLOYMENT.md`).
 
 ## Reporting a vulnerability
 

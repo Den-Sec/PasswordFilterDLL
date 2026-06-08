@@ -129,6 +129,11 @@ This is a defensive tool. See [SECURITY.md](SECURITY.md) for the threat model, t
 `LSASS`-safety rules it follows, and recovery steps (DSRM) should a filter ever need to be
 removed. Test only in a lab VM with a non-production Domain Controller.
 
+> **Code signing.** On hosts with **LSA Protection (RunAsPPL)** enabled, LSASS runs
+> protected and refuses unsigned notification packages (error 577); the DLL must be
+> **code-signed** there. On hosts without LSA Protection, an unsigned build loads and runs.
+> See [SECURITY.md](SECURITY.md#code-signing-and-lsa-protection-runasppl).
+
 ## License
 
 [MIT](LICENSE) © Dennis Sepede ([Den-Sec](https://github.com/Den-Sec))
