@@ -124,9 +124,13 @@ Full guides: [DEPLOYMENT](docs/DEPLOYMENT.md) · [CONFIG](docs/CONFIG.md) · [AR
 ## 🧪 Validation & status
 
 - **`v0.1.0`** - core, LSASS shim, offline Bloom pipeline, and deployment tooling are all in place.
-- Continuous integration on `windows-latest` builds the x64 DLL and runs the full unit-test
-  suite (SHA-1 NIST vectors, Bloom round-trips, complexity, blacklist, policy, breach, and
-  cross-language format parity) on every push.
+- **Windows CI** (`windows-latest`) builds the x64 DLL and runs the full unit-test suite
+  (SHA-1 NIST vectors, Bloom round-trips, complexity, blacklist, policy, breach, and
+  cross-language format parity) on every push, with warnings-as-errors.
+- **Memory-safety CI** (`ubuntu-latest`, Clang) builds the portable core and runs the same
+  suite under **AddressSanitizer + UndefinedBehaviorSanitizer** - so "memory-safe" (the #1
+  requirement for code that runs in LSASS) is an automated gate, not just a claim. This also
+  proves the core is compiler-portable (MSVC + Clang).
 - The filter logic has been validated working on a real Windows host.
 
 ## 🔏 Security & code signing
